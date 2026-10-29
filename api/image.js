@@ -8,11 +8,17 @@ module.exports = async (req, res) => {
   });
   if (req.method === "GET") {
     if (!id || !token) return res.status(200).json({ missing: [!id && "CF_ACCOUNT_ID", !token && "CF_API_TOKEN"].filter(Boolean) });
+    const info = { idLength: id.length, tokenLength: token.length, tokenHasSpace: /\s/.test(token), idHasSpace: /\s/.test(id) };
+    const h = { Authorization: "Bearer " + token.trim() };
     try {
-      const r = await call("a red apple");
-      const t = await r.text();
-      return res.status(200).json({ status: r.status, body: t.slice(0, 300) });
-    } catch (e) { return res.status(200).json({ fetchError: String(e).slice(0, 200) }); }
+      const a = await fetch("https://api.cloudflare.com/client/v4/user/tokens/verify", { headers: h });
+      info.userVerify = a.status;
+      const b = await fetch(`https://api.cloudflare.com/client/v4/accounts/${id.trim()}/tokens/verify`, { headers: h });
+      info.accountVerify = b.status;
+      const c = await fetch(`https://api.cloudflare.com/client/v4/accounts/${id.trim()}/ai/models/search?per_page=1`, { headers: h });
+      info.aiAccess = c.status;
+    } catch (e) { info.fetchError = String(e).slice(0, 150); }
+    return res.status(200).json(info);
   }
   if (req.method !== "POST") return res.status(405).json({ error: "method" });
   const { prompt, style, ratio, count } = req.body || {};
