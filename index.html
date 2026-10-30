@@ -1,159 +1,240 @@
 <!DOCTYPE html>
-<html lang="uz"><head><meta charset="utf-8">
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Dima’AI.uz</title>
+<title>Dima AI</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <style>
-:root{--bg:#0b0a14;--card:#16132a;--card2:#1d1938;--tx:#f2f0ff;--mu:#9a95c0;--ac:#8b5cf6;--ac2:#a78bfa;--bd:#2d2850;--er:#f87171;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-:root[data-theme="light"]{--bg:#f5f3ff;--card:#fff;--card2:#ede9fe;--tx:#1e1b3a;--mu:#6b6790;--bd:#ddd6fe}
-@media(prefers-color-scheme:light){:root:not([data-theme]){--bg:#f5f3ff;--card:#fff;--card2:#ede9fe;--tx:#1e1b3a;--mu:#6b6790;--bd:#ddd6fe}}
-*{box-sizing:border-box;margin:0}
-html,body{height:100%}
-body{background:radial-gradient(900px 500px at 50% -10%,#4c2a9a55,transparent),var(--bg);color:var(--tx);font:16px system-ui,sans-serif}
-button,input,textarea,select{font:inherit;color:inherit}
-button{cursor:pointer;border:0;background:none}
-.logo{font-weight:700;font-size:22px}.logo b{color:var(--ac2)}
-.view{display:none;min-height:100%}.view.on{display:block}
-.wrap{max-width:560px;margin:0 auto;padding:20px 16px 90px}
-.btn{width:100%;padding:14px;border-radius:999px;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;font-weight:600;box-shadow:0 0 22px #8b5cf655}
-.btn:disabled{opacity:.6}
-.in{width:100%;padding:14px;border-radius:14px;background:var(--card);border:1px solid var(--bd);margin:6px 0 14px;outline:0}
-.in:focus{border-color:var(--ac)}
-label{font-size:14px;color:var(--mu)}
-.tabs{display:flex;gap:8px;margin:18px 0}
-.tabs button{flex:1;padding:10px;border-radius:999px;background:var(--card);border:1px solid var(--bd);color:var(--mu)}
-.tabs .on{background:var(--card2);color:var(--tx);border-color:var(--ac)}
-.err{color:var(--er);font-size:14px;min-height:20px;margin-bottom:8px}
-.note{font-size:12px;color:var(--mu);text-align:center;margin-top:14px;line-height:1.5}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.ic{width:40px;height:40px;border-radius:50%;background:var(--card);border:1px solid var(--bd)}
-select.sel{background:var(--card);border:1px solid var(--bd);padding:10px 14px;border-radius:999px;outline:0}
-.orb{width:70px;height:70px;border-radius:50%;margin:18px auto;background:radial-gradient(circle at 30% 30%,#c4b5fd,#6d28d9 60%,#1e1b4b);box-shadow:0 0 40px #8b5cf6aa;animation:fl 4s ease-in-out infinite}
-@keyframes fl{50%{transform:translateY(-8px)}}
-h1{font-size:24px;text-align:center}
-.sub{color:var(--mu);text-align:center;margin:6px 0 18px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
-.tile{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:14px;text-align:left}
-.tile small{color:var(--mu);display:block;margin-top:4px}
-.chat{display:flex;flex-direction:column;gap:10px;margin:12px 0}
-.msg{padding:12px 14px;border-radius:16px;max-width:88%;white-space:pre-wrap;line-height:1.45}
-.me{align-self:flex-end;background:linear-gradient(135deg,#7c3aed,#8b5cf6);color:#fff}
-.ai{align-self:flex-start;background:var(--card);border:1px solid var(--bd)}
-.ai.bad{border-color:var(--er)}
-.mini{margin-top:8px;padding:6px 12px;border-radius:999px;background:var(--card2);font-size:13px;margin-right:6px}
-.dots span{animation:b 1s infinite;display:inline-block}.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
-@keyframes b{50%{opacity:.2}}
-.bar{position:sticky;bottom:78px;display:flex;gap:8px;align-items:flex-end;background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:8px}
-.bar textarea{flex:1;background:none;border:0;outline:0;resize:none;padding:8px;max-height:120px}
-.send{width:42px;height:42px;border-radius:50%;background:var(--ac);color:#fff;font-size:18px}
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 16px}
-.chip{padding:8px 14px;border-radius:999px;background:var(--card);border:1px solid var(--bd);font-size:14px}
-.chip.on{background:var(--ac);border-color:var(--ac);color:#fff}
-.prev{background:var(--card);border:1px dashed var(--bd);border-radius:18px;min-height:200px;display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;margin-top:16px;color:var(--mu)}
-.nav{position:fixed;left:0;right:0;bottom:0;padding-bottom:env(safe-area-inset-bottom,0px);background:var(--card);border-top:1px solid var(--bd);display:flex;justify-content:space-around;z-index:5}
-.nav button{padding:12px 8px;font-size:12px;color:var(--mu);flex:1}.nav .on{color:var(--ac2)}
-.nav span{display:block;font-size:20px}
-.row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bd)}
-</style></head><body>
+:root{--bg:#07030f;--glass:rgba(124,58,237,.10);--line:rgba(167,139,250,.22);--neon:#c084fc;--pink:#f0abfc}
+*{-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:#f3e8ff;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden}
+.glass{background:var(--glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--line)}
+.bg-glow{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(60% 50% at 20% 0%,rgba(124,58,237,.35),transparent),radial-gradient(50% 40% at 90% 100%,rgba(217,70,239,.22),transparent)}
+.orb{border-radius:9999px;background:radial-gradient(circle at 32% 28%,#f5d0fe,#a855f7 45%,#4c1d95 85%);box-shadow:0 0 60px 10px rgba(168,85,247,.55),0 0 140px 40px rgba(217,70,239,.25);animation:pulse 3.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.07);filter:brightness(1.2)}}
+.btn{background:linear-gradient(135deg,#9333ea,#d946ef);box-shadow:0 0 22px rgba(192,132,252,.45);transition:transform .15s,box-shadow .15s}
+.btn:hover{box-shadow:0 0 32px rgba(240,171,252,.7)}.btn:active{transform:scale(.97)}
+.ghost{border:1px solid var(--line);transition:background .15s}.ghost:hover{background:rgba(167,139,250,.15)}
+.hidden-view{display:none!important}
+.modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(5,2,12,.75);backdrop-filter:blur(6px)}
+.modal.open{display:flex}
+input,textarea,select{background:rgba(255,255,255,.05);border:1px solid var(--line);color:#fff;outline:none;border-radius:12px}
+input:focus,textarea:focus,select:focus{border-color:var(--neon);box-shadow:0 0 0 3px rgba(192,132,252,.25)}
+select option{background:#14091f}
+#drawer{transition:transform .25s}
+@media(max-width:1023px){#drawer{position:fixed;top:0;left:0;bottom:0;z-index:60;transform:translateX(-105%);width:80%;max-width:300px}#drawer.open{transform:none}}
+#overlay{display:none;position:fixed;inset:0;z-index:55;background:rgba(0,0,0,.6)}#overlay.open{display:block}
+.msg-u{background:linear-gradient(135deg,#7c3aed,#c026d3);border-radius:18px 18px 4px 18px}
+.msg-a{background:rgba(124,58,237,.14);border:1px solid var(--line);border-radius:18px 18px 18px 4px}
+.toggle{width:44px;height:24px;border-radius:99px;background:#3b2a55;position:relative;cursor:pointer;transition:.2s;flex:none}
+.toggle::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.2s}
+.toggle.on{background:#a855f7}.toggle.on::after{left:23px}
+body.light{background:#f5eefe;color:#2a1344}body.light .glass{background:rgba(255,255,255,.65)}body.light .bg-glow{opacity:.4}
+body.light input,body.light textarea,body.light select{color:#2a1344;background:rgba(255,255,255,.7)}
+@media(prefers-reduced-motion:reduce){.orb{animation:none}}
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
 
-<section class="view on" id="v-auth"><div class="wrap">
-<div class="logo" style="margin-top:20px">Dima’AI <b>✦</b></div>
-<h1 style="text-align:left;font-size:28px;margin-top:22px">Sun’iy intellekt imkoniyatlari bir joyda</h1>
-<div class="tabs"><button id="t-in" class="on">Kirish</button><button id="t-up">Ro‘yxatdan o‘tish</button></div>
-<div id="f-name" style="display:none"><label>Ism</label><input class="in" id="name" placeholder="Ismingiz"></div>
-<label>Email</label><input class="in" id="email" type="email" placeholder="email@misol.uz">
-<label>Parol</label><input class="in" id="pass" type="password" placeholder="Kamida 8 belgi">
-<div class="err" id="aerr"></div>
-<button class="btn" id="abtn">Kirish</button>
-<p class="note"><a href="#" id="forgot" style="color:var(--ac2)">Parolni unutdingizmi?</a></p>
-<p class="note">Google orqali kirish — server ulanganda ishlaydi (hozircha o‘chiq).<br>Davom etish orqali Maxfiylik siyosati va Foydalanish shartlariga rozilik bildirasiz.</p>
-<p class="note" style="color:var(--er)">DEMO: hozirgi kirish faqat shu qurilmada saqlanadi. Haqiqiy autentifikatsiya uchun backend kerak.</p>
-</div></section>
+<!-- ============ LANDING ============ -->
+<div id="landing" class="relative z-10 min-h-screen flex flex-col">
+  <header class="glass sticky top-0 z-40 flex items-center justify-between px-4 sm:px-8 py-3" style="padding-top:max(.75rem,env(safe-area-inset-top))">
+    <div class="flex items-center gap-2 font-bold text-lg"><span class="orb w-7 h-7 inline-block" style="animation:none;box-shadow:0 0 14px #a855f7"></span>Dima AI</div>
+    <div class="flex gap-2">
+      <button data-auth="login" class="ghost rounded-full px-4 py-2 text-sm">Kirish</button>
+      <button data-auth="register" class="btn rounded-full px-4 py-2 text-sm font-semibold text-white">Boshlash</button>
+    </div>
+  </header>
 
-<section class="view" id="v-home"><div class="wrap">
-<div class="top"><select class="sel" id="aisel"></select><button class="ic" id="theme">◐</button></div>
-<div id="hero"><div class="orb"></div><h1 id="hi">Salom! Bugun nima yaratamiz?</h1><p class="sub">AI ni tanlang va savol bering</p></div>
-<div class="chat" id="chat"></div>
-<div class="bar"><textarea id="q" rows="1" placeholder="Istalgan savol..."></textarea><button class="send" id="send">↑</button></div>
-<div class="grid" id="tiles">
-<button class="tile" data-go="img">🎨 Rasm yaratish<small>Matndan rasm</small></button>
-<button class="tile" data-p="Menga kod yozib ber: ">💻 Kod yozish<small>AI 2 bilan</small></button>
-<button class="tile" data-p="Quyidagi mavzuda matn yoz: ">✍️ Matn yozish<small>AI 1 bilan</small></button>
-<button class="tile" data-p="Tarjima qil: ">🌐 Tarjima<small>UZ · RU · EN</small></button></div>
-</div></section>
+  <main class="flex-1">
+    <section class="text-center px-5 pt-14 pb-16 max-w-3xl mx-auto">
+      <div class="orb w-32 h-32 sm:w-44 sm:h-44 mx-auto mb-10"></div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold leading-tight">Kelajak Sun'iy Intellekti Dima AI Bilan</h1>
+      <p class="mt-5 text-violet-200/80 text-base sm:text-lg">Savol bering, rasm yarating, taqdimot va kod yozdiring. Hammasi bitta joyda, o'zbek tilida.</p>
+      <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+        <button id="ctaDash" class="btn rounded-full px-7 py-3 font-semibold text-white">Dashboardga O'tish</button>
+        <button id="ctaPrice" class="ghost glass rounded-full px-7 py-3 font-semibold">Tariflarni Ko'rish</button>
+      </div>
+    </section>
 
-<section class="view" id="v-img"><div class="wrap">
-<div class="top"><div class="logo">Rasm yaratish</div><span class="chip">Gemini</span></div>
-<label>Rasmni tasvirlang</label>
-<textarea class="in" id="ip" rows="4" placeholder="Tong otganda gullagan sakura va ko‘l bo‘yidagi yapon bog‘i..."></textarea>
-<label>Uslub</label><div class="chips" id="styles"></div>
-<label>Format</label><div class="chips" id="ratios"></div>
-<label>Soni</label><div class="chips" id="cnt"></div>
-<button class="btn" id="gen">Yaratish</button>
-<div class="prev" id="prev">Rasm shu yerda ko‘rinadi</div>
-</div></section>
+    <section class="px-5 pb-16 max-w-5xl mx-auto">
+      <h2 class="text-2xl font-bold text-center mb-8">Foydalanuvchilar fikri</h2>
+      <div class="grid gap-4 md:grid-cols-3">
+        <div class="glass rounded-2xl p-5"><div class="text-yellow-300 mb-2"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div><p class="text-sm text-violet-100/90">Dars tayyorlashda juda yordam berdi. Javoblar tez va tushunarli.</p><p class="mt-3 font-semibold">Jasurbek T.</p></div>
+        <div class="glass rounded-2xl p-5"><div class="text-yellow-300 mb-2"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div><p class="text-sm text-violet-100/90">Dizayni chiroyli, telefonda ham qulay ishlaydi. Rasm yaratish menga yoqdi.</p><p class="mt-3 font-semibold">Madina K.</p></div>
+        <div class="glass rounded-2xl p-5"><div class="text-yellow-300 mb-2"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></div><p class="text-sm text-violet-100/90">Kod yozishda yordamchi sifatida ishlataman. Vaqtimni tejaydi.</p><p class="mt-3 font-semibold">Bobur M.</p></div>
+      </div>
+    </section>
+  </main>
+  <footer class="text-center text-sm text-violet-300/60 py-6 px-4">&copy; 2026 Dima AI. Barcha huquqlar himoyalangan.</footer>
+</div>
 
-<section class="view" id="v-prof"><div class="wrap">
-<div class="top"><div class="logo">Profil</div></div>
-<div class="tile" style="margin-bottom:14px"><b id="pn">—</b><small id="pe"></small></div>
-<div class="row"><span>Chat limiti</span><span style="color:var(--mu)">server ulanganda</span></div>
-<div class="row"><span>Rasm limiti (kunlik)</span><span style="color:var(--mu)">server ulanganda</span></div>
-<div class="row"><span>Til</span><span>O‘zbek</span></div>
-<button class="btn" id="out" style="margin-top:24px;background:var(--card2);box-shadow:none">Chiqish</button>
-</div></section>
+<!-- ============ DASHBOARD ============ -->
+<div id="dashboard" class="hidden-view relative z-10 h-screen flex" style="height:100dvh">
+  <div id="overlay"></div>
+  <aside id="drawer" class="glass flex flex-col p-4 lg:w-64 lg:flex-none lg:relative" style="background:rgba(14,6,28,.92)">
+    <div class="flex items-center justify-between mb-5">
+      <div class="flex items-center gap-2 font-bold text-lg"><span class="orb w-7 h-7 inline-block" style="animation:none;box-shadow:0 0 14px #a855f7"></span>Dima AI</div>
+      <button id="closeDrawer" class="lg:hidden ghost rounded-lg w-9 h-9" aria-label="Yopish"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <button id="newChat" class="btn rounded-xl py-2.5 font-semibold text-white mb-5"><i class="fa-solid fa-plus mr-2"></i>New Chat</button>
+    <nav class="flex flex-col gap-1 text-sm">
+      <button data-nav="chat" class="nav ghost rounded-lg px-3 py-2.5 text-left bg-violet-500/20"><i class="fa-regular fa-comment w-6"></i>Chat</button>
+      <button data-nav="archived" class="nav ghost rounded-lg px-3 py-2.5 text-left border-transparent"><i class="fa-solid fa-box-archive w-6"></i>Archived</button>
+      <button id="goHome" class="ghost rounded-lg px-3 py-2.5 text-left border-transparent"><i class="fa-solid fa-house w-6"></i>Asosiy Sahifa</button>
+    </nav>
+    <div id="archiveList" class="mt-3 text-xs text-violet-300/70 overflow-y-auto"></div>
+    <div class="mt-auto glass rounded-2xl p-4 text-center">
+      <i class="fa-solid fa-crown text-yellow-300"></i>
+      <p class="font-semibold mt-1">Upgrade to Premium</p>
+      <p class="text-xs text-violet-200/70 mt-1">Cheksiz xabarlar va tezroq javoblar.</p>
+      <button data-open="pricing" class="btn w-full rounded-lg py-2 mt-3 text-sm font-semibold text-white">Upgrade</button>
+    </div>
+  </aside>
 
-<nav class="nav" id="nav" style="display:none">
-<button data-go="home" class="on"><span>💬</span>Chat</button>
-<button data-go="img"><span>🎨</span>Rasm</button>
-<button data-go="prof"><span>👤</span>Profil</button></nav>
+  <section class="flex-1 min-w-0 flex flex-col">
+    <div class="glass flex items-center gap-2 px-3 sm:px-5 py-2.5" style="padding-top:max(.6rem,env(safe-area-inset-top))">
+      <button id="burger" class="lg:hidden ghost rounded-lg w-10 h-10" aria-label="Menyu"><i class="fa-solid fa-bars"></i></button>
+      <select id="modelTop" class="px-3 py-2 text-sm">
+        <option>ChatGPT v4.0</option><option>Gemini</option><option>Claude</option>
+      </select>
+      <span id="userEmail" class="ml-auto text-xs sm:text-sm text-violet-200/80 truncate max-w-[40%]"></span>
+      <button id="logout" class="ghost rounded-lg px-3 py-2 text-sm"><i class="fa-solid fa-right-from-bracket sm:mr-1"></i><span class="hidden sm:inline">Logout</span></button>
+    </div>
+
+    <div id="chatArea" class="flex-1 overflow-y-auto px-4 py-5">
+      <div id="empty" class="h-full flex flex-col items-center justify-center text-center">
+        <div class="orb w-24 h-24 mb-6"></div>
+        <h2 class="text-2xl sm:text-3xl font-semibold">Ready to Create Something New?</h2>
+      </div>
+      <div id="messages" class="hidden-view max-w-3xl mx-auto flex flex-col gap-3"></div>
+    </div>
+
+    <div class="px-3 sm:px-6 pb-3" style="padding-bottom:max(.75rem,env(safe-area-inset-bottom))">
+      <div class="max-w-3xl mx-auto">
+        <div class="glass rounded-2xl p-3">
+          <textarea id="prompt" rows="2" placeholder="Ask Anything..." class="w-full resize-none p-2 bg-transparent border-0"></textarea>
+          <input type="file" id="fileInput" class="hidden">
+          <div class="flex items-center gap-2 mt-1">
+            <button id="attach" class="ghost rounded-lg px-3 py-2 text-xs sm:text-sm"><i class="fa-solid fa-paperclip mr-1"></i>Attach</button>
+            <button data-open="settings" class="ghost rounded-lg px-3 py-2 text-xs sm:text-sm"><i class="fa-solid fa-sliders mr-1"></i>Settings</button>
+            <button id="send" class="btn ml-auto w-10 h-10 rounded-full text-white" aria-label="Yuborish"><i class="fa-solid fa-arrow-up"></i></button>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-2 mt-3 text-left">
+          <button class="sug glass rounded-xl p-2.5 sm:p-3" data-p="Menga bir rasm yarat: kechki Samarqand, neon uslubida"><i class="fa-regular fa-image text-fuchsia-300"></i><p class="text-xs sm:text-sm font-semibold mt-1">Image Generator</p><p class="hidden sm:block text-xs text-violet-200/60">Matndan rasm yarating</p></button>
+          <button class="sug glass rounded-xl p-2.5 sm:p-3" data-p="Sun'iy intellekt haqida 5 slaydlik taqdimot rejasini tuz"><i class="fa-regular fa-file-powerpoint text-fuchsia-300"></i><p class="text-xs sm:text-sm font-semibold mt-1">AI Presentation</p><p class="hidden sm:block text-xs text-violet-200/60">Slaydlar tayyorlang</p></button>
+          <button class="sug glass rounded-xl p-2.5 sm:p-3" data-p="JavaScript'da oddiy kalkulyator kodini yozib ber"><i class="fa-solid fa-code text-fuchsia-300"></i><p class="text-xs sm:text-sm font-semibold mt-1">Dev Assistant</p><p class="hidden sm:block text-xs text-violet-200/60">Toza kod yozing</p></button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ MODALS ============ -->
+<div id="m-auth" class="modal"><div class="glass rounded-2xl p-6 w-full max-w-sm" style="background:rgba(16,7,30,.95)">
+  <div class="flex justify-between items-center mb-4"><h3 id="authTitle" class="text-xl font-bold">Kirish</h3><button data-close class="ghost rounded-lg w-9 h-9" aria-label="Yopish"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="flex flex-col gap-3">
+    <input id="authEmail" type="email" placeholder="Email" class="px-4 py-3" autocomplete="email">
+    <input id="authPass" type="password" placeholder="Parol (kamida 6 belgi)" class="px-4 py-3" autocomplete="current-password">
+    <input id="authPass2" type="password" placeholder="Parolni tasdiqlang" class="px-4 py-3 hidden-view">
+    <p id="authErr" class="text-sm text-pink-300 min-h-[1.25rem]"></p>
+    <button id="authSubmit" class="btn rounded-xl py-3 font-semibold text-white">Kirish</button>
+    <button id="authSwitch" class="text-sm text-violet-300 underline">Akkauntingiz yo'qmi? Ro'yxatdan o'tish</button>
+  </div></div></div>
+
+<div id="m-pricing" class="modal"><div class="glass rounded-2xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto" style="background:rgba(16,7,30,.95)">
+  <div class="flex justify-between items-center mb-4"><h3 class="text-xl font-bold">Tariflar</h3><button data-close class="ghost rounded-lg w-9 h-9" aria-label="Yopish"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="grid sm:grid-cols-2 gap-4">
+    <div class="glass rounded-2xl p-5"><h4 class="font-bold text-lg">Free</h4><p class="text-3xl font-extrabold mt-2">0 <span class="text-sm font-normal">so'm</span></p>
+      <ul class="text-sm mt-3 space-y-1.5 text-violet-100/85"><li><i class="fa-solid fa-check text-fuchsia-300 mr-2"></i>Kuniga 20 ta xabar</li><li><i class="fa-solid fa-check text-fuchsia-300 mr-2"></i>Oddiy modellar</li><li><i class="fa-solid fa-check text-fuchsia-300 mr-2"></i>Asosiy chat</li></ul>
+      <button data-plan="Free" class="ghost w-full rounded-xl py-2.5 mt-4 font-semibold">Joriy tarif</button></div>
+    <div class="rounded-2xl p-5" style="border:1px solid #d946ef;box-shadow:0 0 28px rgba(217,70,239,.35);background:rgba(124,58,237,.18)"><h4 class="font-bold text-lg">Pro</h4><p class="text-3xl font-extrabold mt-2">49,000 <span class="text-sm font-normal">so'm/oy</span></p>
+      <ul class="text-sm mt-3 space-y-1.5 text-violet-100/85"><li><i class="fa-solid fa-check text-fuchsia-300 mr-2"></i>Cheksiz xabarlar</li><li><i class="fa-solid fa-check text-fuchsia-300 mr-2"></i>Barcha modellar</li><li><i class="fa-solid fa-check text-fuchsia-300 mr-2"></i>Rasm va taqdimot</li></ul>
+      <button data-plan="Pro" class="btn w-full rounded-xl py-2.5 mt-4 font-semibold text-white">Pro'ni tanlash</button></div>
+  </div></div></div>
+
+<div id="m-settings" class="modal"><div class="glass rounded-2xl p-6 w-full max-w-sm" style="background:rgba(16,7,30,.95)">
+  <div class="flex justify-between items-center mb-4"><h3 class="text-xl font-bold">Sozlamalar</h3><button data-close class="ghost rounded-lg w-9 h-9" aria-label="Yopish"><i class="fa-solid fa-xmark"></i></button></div>
+  <div class="flex flex-col gap-4">
+    <div class="flex items-center justify-between"><span>Ovozli xabarlar</span><div id="tVoice" class="toggle" role="switch" tabindex="0"></div></div>
+    <div class="flex items-center justify-between"><span>Qorong'i rejim</span><div id="tDark" class="toggle on" role="switch" tabindex="0"></div></div>
+    <label class="flex flex-col gap-1.5 text-sm">AI modeli
+      <select id="modelSet" class="px-3 py-2.5 text-base"><option>ChatGPT v4.0</option><option>Gemini</option><option>Claude</option></select></label>
+    <button data-close class="btn rounded-xl py-2.5 font-semibold text-white">Tayyor</button>
+  </div></div></div>
+
+<div id="toast" class="fixed left-1/2 -translate-x-1/2 z-[200] glass rounded-full px-5 py-2.5 text-sm hidden-view" style="bottom:90px;background:rgba(16,7,30,.95)"></div>
 
 <script>
-const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const AIS=[{id:'ai1',n:'AI 1 · Universal yordamchi'},{id:'ai2',n:'AI 2 · Mantiq va kod'},{id:'ai3',n:'AI 3 · Tezkor yordamchi'}];
-const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
-let mode='in',user=store.get('dima_user');
-function go(v){$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.go===v));$('#nav').style.display=v==='auth'?'none':'flex';scrollTo(0,0)}
-function enter(){$('#hi').textContent='Salom, '+user.name+'! Bugun nima yaratamiz?';$('#pn').textContent=user.name;$('#pe').textContent=user.email;go('home')}
-$('#t-in').onclick=()=>setMode('in');$('#t-up').onclick=()=>setMode('up');
-function setMode(m){mode=m;$('#t-in').classList.toggle('on',m==='in');$('#t-up').classList.toggle('on',m==='up');$('#f-name').style.display=m==='up'?'block':'none';$('#abtn').textContent=m==='up'?'Ro‘yxatdan o‘tish':'Kirish';$('#aerr').textContent=''}
-$('#abtn').onclick=()=>{const e=$('#email').value.trim(),p=$('#pass').value,n=$('#name').value.trim(),er=$('#aerr');
- if(!/^\S+@\S+\.\S+$/.test(e))return er.textContent='Email noto‘g‘ri kiritilgan.';
- if(p.length<8)return er.textContent='Parol kamida 8 belgidan iborat bo‘lsin.';
- if(mode==='up'){if(n.length<2)return er.textContent='Ismingizni kiriting.';user={name:n,email:e};store.set('dima_user',user);enter()}
- else{const u=store.get('dima_user');if(!u||u.email!==e)return er.textContent='Bunday hisob topilmadi. Avval ro‘yxatdan o‘ting.';user=u;enter()}};
-$('#forgot').onclick=e=>{e.preventDefault();$('#aerr').textContent='Parolni tiklash backend ulanganda ishlaydi.'};
-$('#out').onclick=()=>{user=null;go('auth')};
-$$('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
-$$('[data-p]').forEach(b=>b.onclick=()=>{$('#q').value=b.dataset.p;$('#q').focus()});
-$('#theme').onclick=()=>{const r=document.documentElement;r.dataset.theme=r.dataset.theme==='light'?'dark':'light'};
-AIS.forEach(a=>$('#aisel').add(new Option(a.n,a.id)));
-function bubble(t,c){const d=document.createElement('div');d.className='msg '+c;d.textContent=t;$('#chat').append(d);d.scrollIntoView({block:'end'});return d}
-async function ask(text){
- $('#hero').style.display='none';$('#tiles').style.display='none';
- const w=document.createElement('div');w.className='msg ai';w.innerHTML='<span class="dots"><span>●</span><span>●</span><span>●</span></span>';$('#chat').append(w);
- try{const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ai:$('#aisel').value,message:text})});
-  if(r.status===429)throw new Error('Bepul limit tugadi. Keyinroq urinib ko‘ring.');
-  if(!r.ok)throw new Error('Server javob bermadi.');
-  const j=await r.json();w.textContent=j.reply;
-  const c=document.createElement('button');c.className='mini';c.textContent='Nusxalash';c.onclick=()=>navigator.clipboard&&navigator.clipboard.writeText(j.reply);
-  const g=document.createElement('button');g.className='mini';g.textContent='Qayta yaratish';g.onclick=()=>{w.remove();ask(text)};
-  w.append(document.createElement('br'),c,g)
- }catch(e){w.classList.add('bad');w.textContent='AI bilan aloqa yo‘q: '+(e.message==='Failed to fetch'||e.name==='TypeError'?'backend server hali ulanmagan.':e.message)+' (Javob o‘ylab topilmadi.)';
-  const b=document.createElement('button');b.className='mini';b.textContent='Qayta urinish';b.onclick=()=>{w.remove();ask(text)};w.append(document.createElement('br'),b)}
- w.scrollIntoView({block:'end'})}
-function sendQ(){const t=$('#q').value.trim();if(!t)return;$('#q').value='';bubble(t,'me');ask(t)}
-$('#send').onclick=sendQ;
-$('#q').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendQ()}};
-function chips(id,list,def){const c=$(id);list.forEach((t,i)=>{const b=document.createElement('button');b.className='chip'+(i===def?' on':'');b.textContent=t;b.onclick=()=>{$$(id+' .chip').forEach(x=>x.classList.remove('on'));b.classList.add('on')};c.append(b)})}
-chips('#styles',['Realistik','Anime','3D render','Multfilm','Fantastika','Logo','Avatar','Poster','Fon','Digital art'],0);
-chips('#ratios',['1:1','16:9','9:16','4:5'],1);chips('#cnt',['1','2','4'],0);
-$('#gen').onclick=async()=>{const p=$('#ip').value.trim(),pv=$('#prev');
- if(p.length<3){pv.textContent='Avval rasm tavsifini yozing.';return}
- pv.innerHTML='<span class="dots"><span>●</span><span>●</span><span>●</span></span>&nbsp; Yaratilmoqda...';
- const sel=s=>($(s+' .on')||{}).textContent;
- try{const r=await fetch('/api/image',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:p,style:sel('#styles'),ratio:sel('#ratios'),count:+sel('#cnt')})});
-  if(r.status===429)throw new Error('Kunlik bepul limit tugadi.');
-  if(!r.ok)throw new Error('Server xatosi.');
-  const j=await r.json();pv.innerHTML='';j.images.forEach(u=>{const i=new Image();i.src=u;i.style.cssText='max-width:100%;border-radius:14px;margin:4px';pv.append(i)})
- }catch(e){pv.innerHTML='Rasm yaratilmadi: '+(e.name==='TypeError'?'Gemini serveri hali ulanmagan.':e.message)+'<br><button class="mini" id="rt">Qayta urinish</button>';$('#rt').onclick=()=>$('#gen').click()}};
-if(user)enter();
-</script></body></html>
+(function(){
+  // ---- Supabase ----
+  var SUPABASE_URL = "https://qjgnwremgeyajzpwybvb.supabase.co";
+  var SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqZ253cmVtZ2V5YWp6cHd5YnZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzNDU5NTgsImV4cCI6MjEwODkyMTk1OH0.ztJTRZOF8FFt159K-0eVkre7vbKjXeDf5yukLjVJ-iE"; // anon public key
+  var sb = null;
+  try { if (SUPABASE_KEY && SUPABASE_KEY.indexOf("YOUR_") !== 0 && window.supabase) sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY); } catch(e){ console.warn(e); }
+
+  var $ = function(id){ return document.getElementById(id); };
+  var state = { user:null, mode:"login", voice:false, busy:false, history:[] };
+  var authBusy = false;
+
+  function toast(t){ var el=$("toast"); el.textContent=t; el.classList.remove("hidden-view"); clearTimeout(toast.t); toast.t=setTimeout(function(){el.classList.add("hidden-view")},2400); }
+  function openModal(n){ closeModals(); $("m-"+n).classList.add("open"); }
+  function closeModals(){ document.querySelectorAll(".modal").forEach(function(m){m.classList.remove("open")}); }
+  function closeDrawer(){ $("drawer").classList.remove("open"); $("overlay").classList.remove("open"); }
+  function show(view){
+    $("landing").classList.toggle("hidden-view", view!=="landing");
+    $("dashboard").classList.toggle("hidden-view", view!=="dashboard");
+    closeDrawer(); window.scrollTo(0,0);
+  }
+  function setAuthMode(m){
+    state.mode=m; var reg=m==="register";
+    $("authTitle").textContent = reg?"Ro'yxatdan o'tish":"Kirish";
+    $("authSubmit").textContent = reg?"Boshlash":"Kirish";
+    $("authSwitch").textContent = reg?"Akkauntingiz bormi? Kirish":"Akkauntingiz yo'qmi? Ro'yxatdan o'tish";
+    $("authPass2").classList.toggle("hidden-view", !reg);
+    $("authPass").autocomplete = reg?"new-password":"current-password";
+    $("authErr").textContent="";
+  }
+  function enterDashboard(user){
+    state.user=user; $("userEmail").textContent=user.email||"Mehmon";
+    show("dashboard");
+  }
+
+  // ---- Landing buttons ----
+  document.querySelectorAll("[data-auth]").forEach(function(b){ b.addEventListener("click",function(){ setAuthMode(b.dataset.auth); openModal("auth"); }); });
+  $("ctaDash").addEventListener("click",function(){ if(state.user) enterDashboard(state.user); else { setAuthMode("login"); openModal("auth"); } });
+  $("ctaPrice").addEventListener("click",function(){ openModal("pricing"); });
+  document.querySelectorAll("[data-open]").forEach(function(b){ b.addEventListener("click",function(){ closeDrawer(); openModal(b.dataset.open); }); });
+  document.querySelectorAll("[data-close]").forEach(function(b){ b.addEventListener("click",closeModals); });
+  document.querySelectorAll(".modal").forEach(function(m){ m.addEventListener("mousedown",function(e){ if(e.target===m) closeModals(); }); });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape"){ closeModals(); closeDrawer(); } });
+  document.querySelectorAll("[data-plan]").forEach(function(b){ b.addEventListener("click",function(){ closeModals(); toast(b.dataset.plan==="Pro"?"Pro tarif tez kunda ishga tushadi":"Siz Free tarifdasiz"); }); });
+
+  // ---- Auth ----
+  $("authSwitch").addEventListener("click",function(){ setAuthMode(state.mode==="login"?"register":"login"); });
+  async function submitAuth(){
+    if(authBusy) return;
+    var email=$("authEmail").value.trim(), pass=$("authPass").value, err=$("authErr");
+    if(!/^\S+@\S+\.\S+$/.test(email)){ err.textContent="Email noto'g'ri kiritilgan."; return; }
+    if(pass.length<6){ err.textContent="Parol kamida 6 belgidan iborat bo'lsin."; return; }
+    if(state.mode==="register" && pass!==$("authPass2").value){ err.textContent="Parollar bir xil emas."; return; }
+    authBusy=true; $("authSubmit").disabled=true; err.textContent="";
+    try{
+      if(sb){
+        var r = state.mode==="register" ? await sb.auth.signUp({email:email,password:pass}) : await sb.auth.signInWithPassword({email:email,password:pass});
+        if(r.error) throw r.error;
+        if(!r.data.session && state.mode==="register"){ toast("Emailingizga tasdiqlash xati yuborildi"); closeModals(); return; }
+        closeModals(); enterDashboard(r.data.user||{email:email});
+      } else {
+        closeModals(); enterDashboard({email:email}); toast("Demo rejim: Supabase kaliti kiritilmagan");
+      }
+    }catch(e){ err.textContent = e.message||"Xatolik yuz berdi. Qayta urinib ko'ring."; }
+    finally{ authBusy=false; $("authSubmit").disabled=false; }
+  }
+  $("aut
