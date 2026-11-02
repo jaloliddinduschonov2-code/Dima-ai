@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="uz"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dima’AI.uz</title>
+<style>
+:root{--bg:#070614;--card:#12102a;--card2:#1b1840;--tx:#f3f1ff;--mu:#9a95c8;--ac:#8b5cf6;--ac2:#b69cff;--bd:#2b2656;--er:#f87171;--ok:#34d399;--gold:#fbbf24;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="light"]{--bg:#f4f1ff;--card:#fff;--card2:#ece8ff;--tx:#1e1b3a;--mu:#6b6790;--bd:#ddd6fe}
+@media(prefers-color-scheme:light){:root:not([data-theme]){--bg:#f4f1ff;--card:#fff;--card2:#ece8ff;--tx:#1e1b3a;--mu:#6b6790;--bd:#ddd6fe}}
+*{box-sizing:border-box;margin:0}html,body{height:100%}
+body{background:radial-gradient(700px 420px at 15% -5%,#5b2bd455,transparent),radial-gradient(600px 400px at 100% 10%,#06b6d426,transparent),var(--bg);color:var(--tx);font:16px system-ui,sans-serif}
+button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer;border:0;background:none}
+.logo{font-weight:800;font-size:22px}.logo b{color:var(--ac2)}
+.view{display:none;min-height:100%}.view.on{display:block}
+.wrap{max-width:560px;margin:0 auto;padding:18px 16px 96px}
+.btn{width:100%;padding:14px;border-radius:999px;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;font-weight:600;box-shadow:0 0 24px #8b5cf666}.btn:disabled{opacity:.6}
+.in{width:100%;padding:14px;border-radius:14px;background:var(--card);border:1px solid var(--bd);margin:6px 0 14px;outline:0}.in:focus{border-color:var(--ac)}
+label{font-size:14px;color:var(--mu)}
+.glass{background:color-mix(in srgb,var(--card) 80%,transparent);border:1px solid var(--bd);border-radius:24px;padding:20px;backdrop-filter:blur(10px)}
+.tabs{display:flex;gap:8px;margin:16px 0}.tabs button{flex:1;padding:10px;border-radius:999px;background:var(--card);border:1px solid var(--bd);color:var(--mu)}.tabs .on{background:var(--card2);color:var(--tx);border-color:var(--ac)}
+.err{color:var(--er);font-size:14px;min-height:20px;margin-bottom:8px}.err.ok{color:var(--ok)}
+.note{font-size:12px;color:var(--mu);text-align:center;margin-top:12px;line-height:1.5}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.pill{padding:10px 14px;border-radius:999px;background:var(--card);border:1px solid var(--bd);display:flex;gap:8px;align-items:center}
+.ic{width:42px;height:42px;border-radius:50%;background:var(--card);border:1px solid var(--bd)}
+.stage{perspective:800px;height:170px;display:grid;place-items:center}
+.tilt{transform-style:preserve-3d;transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .15s}
+.cube{width:90px;height:90px;position:relative;transform-style:preserve-3d;animation:spin 16s linear infinite}
+@keyframes spin{to{transform:rotateX(360deg) rotateY(360deg)}}
+.cube i{position:absolute;inset:0;display:grid;place-items:center;font-style:normal;font-size:34px;color:#fff;border:1px solid #b69cff99;background:linear-gradient(135deg,#7c3aed66,#22d3ee26);transform:var(--t) translateZ(45px);box-shadow:inset 0 0 22px #8b5cf666,0 0 30px #8b5cf655}
+h1{font-size:26px;text-align:center;line-height:1.25}.sub{color:var(--mu);text-align:center;margin:6px 0 16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;perspective:700px}
+.tile{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:14px;text-align:left;transition:transform .2s,border-color .2s}
+.tile:active{transform:translateY(-3px) rotateX(8deg);border-color:var(--ac)}.tile small{color:var(--mu);display:block;margin-top:4px}
+.chat{display:flex;flex-direction:column;gap:10px;margin:12px 0}
+.msg{padding:12px 14px;border-radius:16px;max-width:88%;white-space:pre-wrap;line-height:1.45}
+.me{align-self:flex-end;background:linear-gradient(135deg,#7c3aed,#8b5cf6);color:#fff}
+.ai{align-self:flex-start;background:var(--card);border:1px solid var(--bd)}.ai.bad{border-color:var(--er)}
+.mini{margin-top:8px;padding:6px 12px;border-radius:999px;background:var(--card2);font-size:13px;margin-right:6px}
+.dots span{animation:b 1s infinite;display:inline-block}.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}@keyframes b{50%{opacity:.2}}
+.bar{position:sticky;bottom:80px;display:flex;gap:8px;align-items:flex-end;background:var(--card);border:1px solid var(--ac);border-radius:24px;padding:8px;box-shadow:0 0 26px #8b5cf644}
+.bar textarea{flex:1;background:none;border:0;outline:0;resize:none;padding:8px;max-height:120px}
+.send{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;font-size:18px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 16px}.chip{padding:8px 14px;border-radius:999px;background:var(--card);border:1px solid var(--bd);font-size:14px}.chip.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.prev{background:var(--card);border:1px dashed var(--bd);border-radius:18px;min-height:200px;display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;margin-top:16px;color:var(--mu)}
+.nav{position:fixed;left:0;right:0;bottom:0;padding-bottom:env(safe-area-inset-bottom,0px);background:var(--card);border-top:1px solid var(--bd);display:flex;z-index:5}
+.nav button{padding:12px 8px;font-size:12px;color:var(--mu);flex:1}.nav .on{color:var(--ac2)}.nav span{display:block;font-size:20px}
+.row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bd)}
+.sheet{position:fixed;inset:0;background:#000b;display:none;align-items:flex-end;z-index:20}.sheet.on{display:flex}
+.sheet>div{background:var(--card);width:100%;max-width:560px;margin:0 auto;border-radius:24px 24px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px))}
+.mcard{display:flex;gap:12px;align-items:center;padding:14px;border-radius:16px;border:1px solid var(--bd);background:var(--card2);margin-top:10px;width:100%;text-align:left}
+.mcard.on{border-color:var(--ac);box-shadow:0 0 18px #8b5cf655}
+.badge{font-size:11px;padding:3px 8px;border-radius:999px;background:#fbbf2426;color:var(--gold)}.badge.f{background:#34d39926;color:var(--ok)}
+</style></head><body>
+
+<section class="view on" id="v-auth"><div class="wrap">
+<div class="logo" style="margin-top:14px">Dima’AI <b>✦</b></div>
+<div class="glass" style="margin-top:18px">
+<h1 style="text-align:left;font-size:26px">Sun’iy intellekt imkoniyatlari bir joyda</h1>
+<div class="tabs"><button id="t-in" class="on">Kirish</button><button id="t-up">Ro‘yxatdan o‘tish</button></div>
+<div id="f-name" style="display:none"><label>Ism</label><input class="in" id="name" placeholder="Ismingiz"></div>
+<label>Email</label><input class="in" id="email" type="email" placeholder="email@misol.uz" autocomplete="email">
+<label>Parol</label><input class="in" id="pass" type="password" placeholder="Kamida 8 belgi" autocomplete="current-password">
+<div class="err" id="aerr"></div><button class="btn" id="abtn">Kirish</button>
+<p class="note"><a href="#" id="forgot" style="color:var(--ac2)">Parolni unutdingizmi?</a></p>
+<p class="note">Google orqali kirish hozircha o‘chiq. Davom etib, Maxfiylik siyosati va Foydalanish shartlariga rozilik bildirasiz.</p></div>
+</div></section>
+
+<section class="view" id="v-home"><div class="wrap">
+<div class="top"><button class="pill" id="mbtn"><span id="mname">Dima Start</span> ▾</button><button class="ic" id="theme">◐</button></div>
+<div id="hero">
+<div class="stage" id="stage"><div class="tilt" id="tilt"><div class="cube">
+<i style="--t:rotateY(0deg)">✦</i><i style="--t:rotateY(90deg)">✦</i><i style="--t:rotateY(180deg)">✦</i><i style="--t:rotateY(-90deg)">✦</i><i style="--t:rotateX(90deg)">✦</i><i style="--t:rotateX(-90deg)">✦</i></div></div></div>
+<h1 id="hi">Salom! Bugun nima yaratamiz?</h1><p class="sub">Savol bering, matn yozing, rasm yarating</p></div>
+<div class="chat" id="chat"></div>
+<div class="bar"><textarea id="q" rows="1" placeholder="Istalgan savol..."></textarea><button class="send" id="send">↑</button></div>
+<div class="grid" id="tiles">
+<button class="tile" data-go="img">🎨 Rasm yaratish<small>Matndan rasm</small></button>
+<button class="tile" data-p="Menga kod yozib ber: ">💻 Kod yozish<small>Dasturlash yordami</small></button>
+<button class="tile" data-p="Quyidagi mavzuda matn yoz: ">✍️ Matn yozish<small>Maqola, post, xat</small></button>
+<button class="tile" data-p="Tarjima qil: ">🌐 Tarjima<small>UZ · RU · EN</small></button>
+<button class="tile" data-p="IELTS Writing Task 2 uchun fikrimni tekshir: ">📘 IELTS<small>Ingliz tili</small></button>
+<button class="tile" data-p="Quyidagi matnni qisqartirib, xulosa chiqar: ">📝 Xulosa<small>Matnni qisqartirish</small></button></div>
+</div></section>
+
+<section class="view" id="v-img"><div class="wrap">
+<div class="top"><div class="logo">Rasm yaratish</div><span class="chip">FLUX</span></div>
+<label>Rasmni tasvirlang (inglizcha yaxshiroq ishlaydi)</label>
+<textarea class="in" id="ip" rows="4" placeholder="a serene Japanese garden at dawn with cherry blossoms..."></textarea>
+<label>Uslub</label><div class="chips" id="styles"></div>
+<label>Format</label><div class="chips" id="ratios"></div>
+<label>Soni</label><div class="chips" id="cnt"></div>
+<button class="btn" id="gen">Yaratish</button><div class="prev" id="prev">Rasm shu yerda ko‘rinadi</div>
+</div></section>
+
+<section class="view" id="v-prof"><div class="wrap">
+<div class="top"><div class="logo">Profil</div></div>
+<div class="glass" style="margin-bottom:14px"><b id="pn">—</b><div id="pe" style="color:var(--mu);font-size:14px"></div></div>
+<div class="row"><span>Tarif</span><span id="plan">Bepul</span></div>
+<div class="row"><span>Til</span><span>O‘zbek</span></div>
+<button class="btn" id="pcode" style="margin-top:20px">★ Premium kodni kiritish</button>
+<button class="btn" id="out" style="margin-top:12px;background:var(--card2);box-shadow:none">Chiqish</button>
+</div></section>
+
+<nav class="nav" id="nav" style="display:none">
+<button data-go="home" class="on"><span>💬</span>Chat</button><button data-go="img"><span>🎨</span>Rasm</button><button data-go="prof"><span>👤</span>Profil</button></nav>
+
+<div class="sheet" id="s-model"><div><b style="font-size:18px">AI ni tanlang</b><div id="mlist"></div><button class="btn" id="mclose" style="margin-top:14px;background:var(--card2);box-shadow:none">Yopish</button></div></div>
+<div class="sheet" id="s-prem"><div><b style="font-size:18px">★ Premium a’zolik</b>
+<p class="note" style="text-align:left">Dima Pro va Dima Turbo faqat Premium a’zolar uchun. Premium kodni olish uchun admin bilan bog‘laning.</p>
+<input class="in" id="pin" placeholder="Premium kod" autocomplete="off"><div class="err" id="perr"></div>
+<button class="btn" id="psave">Saqlash</button><button class="btn" id="pclose" style="margin-top:10px;background:var(--card2);box-shadow:none">Bekor qilish</button></div></div>
+
+<script>
+const SB='https://qjgnwremgeyajzpwybvb.supabase.co';
+const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqZ253cmVtZ2V5YWp6cHd5YnZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzNDU5NTgsImV4cCI6MjEwODkyMTk1OH0.ztJTRZOF8FFt159K-0eVkre7vbKjXeDf5yukLjVJ-iE';
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const M=[{id:'ai1',n:'Dima Start',d:'Universal yordamchi: savol, matn, tarjima',m:'gpt-oss-120b',p:0},{id:'ai2',n:'Dima Pro',d:'Mantiq, matematika va dasturlash',m:'gpt-oss-120b',p:1},{id:'ai3',n:'Dima Turbo',d:'Tezkor javoblar va g‘oyalar',m:'gpt-oss-20b',p:1}];
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+let mode='in',sess=store.get('dima_sess'),cur='ai1';
+const code=()=>store.get('dima_code');
+const sh=(id,on)=>$(id).classList.toggle('on',on);
+async function sb(path,body,token){
+ try{const r=await fetch(SB+path,{method:'POST',headers:Object.assign({'Content-Type':'application/json',apikey:KEY},token?{Authorization:'Bearer '+token}:{}),body:JSON.stringify(body||{})});
+  let j={};try{j=await r.json()}catch(e){}return{ok:r.ok,status:r.status,j}}catch(e){return{ok:false,status:0,j:{}}}}
+function mk(j,email,name){const exp=j.expires_at||(Math.floor(Date.now()/1000)+(j.expires_in||3600));
+ const u=j.user||{};const nm=(u.user_metadata&&u.user_metadata.name)||name||(email||u.email||'').split('@')[0];
+ return{access_token:j.access_token,refresh_token:j.refresh_token,expires_at:exp,name:nm,email:u.email||email}}
+async function tok(){if(!sess)return null;
+ if(Date.now()/1000>sess.expires_at-60){const r=await sb('/auth/v1/token?grant_type=refresh_token',{refresh_token:sess.refresh_token});
+  if(!r.ok||!r.j.access_token){logout();return null}
+  sess=mk(r.j,sess.email,sess.name);store.set('dima_sess',sess)}
+ return sess.access_token}
+function logout(){const t=sess&&sess.access_token;sess=null;store.del('dima_sess');if(t)sb('/auth/v1/logout',{},t);go('auth')}
+function msg(t){const m=String(t||'');
+ if(/already registered|already been registered/i.test(m))return'Bu email allaqachon ro‘yxatdan o‘tgan. «Kirish» ni tanlang.';
+ if(/invalid login/i.test(m))return'Email yoki parol noto‘g‘ri.';
+ if(/not confirmed/i.test(m))return'Emailingizni tasdiqlang: pochtangizga yuborilgan havolani bosing.';
+ if(/rate limit|too many|security purposes/i.test(m))return'Juda ko‘p urinish. Bir necha daqiqadan keyin qayta urinib ko‘ring.';
+ if(/password/i.test(m))return'Parol juda oddiy yoki qisqa. Kamida 8 belgi kiriting.';
+ return m||'Xatolik yuz berdi. Qayta urinib ko‘ring.'}
+function go(v){$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.go===v));$('#nav').style.display=v==='auth'?'none':'flex';scrollTo(0,0)}
+function enter(){$('#hi').textContent='Salom, '+sess.name+'! Bugun nima yaratamiz?';$('#pn').textContent=sess.name;$('#pe').textContent=sess.email;upd();go('home')}
+function upd(){$('#mname').textContent=M.find(m=>m.id===cur).n;$('#plan').textContent=code()?'★ Premium':'Bepul'}
+function models(){const l=$('#mlist');l.innerHTML='';M.forEach(m=>{const b=document.createElement('button');b.className='mcard'+(m.id===cur?' on':'');
+ b.innerHTML='<div style="flex:1"><b>'+m.n+'</b> <span class="badge'+(m.p?'':' f')+'">'+(m.p?'★ Premium':'Bepul')+'</span><div style="color:var(--mu);font-size:13px;margin-top:4px">'+m.d+'</div><div style="color:var(--mu);font-size:11px;margin-top:2px">Model: '+m.m+'</div></div><span>'+(m.p&&!code()?'🔒':m.id===cur?'✓':'')+'</span>';
+ b.onclick=()=>{if(m.p&&!code()){sh('#s-model',false);sh('#s-prem',true);return}cur=m.id;sh('#s-model',false);upd()};l.append(b)})}
+$('#mbtn').onclick=()=>{models();sh('#s-model',true)};$('#mclose').onclick=()=>sh('#s-model',false);
+$('#pcode').onclick=()=>{$('#perr').textContent='';sh('#s-prem',true)};$('#pclose').onclick=()=>sh('#s-prem',false);
+$('#psave').onclick=()=>{const v=$('#pin').value.trim();if(v.length<4){$('#perr').textContent='Kodni to‘liq kiriting.';return}store.set('dima_code',v);$('#pin').value='';sh('#s-prem',false);upd()};
+$('#t-in').onclick=()=>setMode('in');$('#t-up').onclick=()=>setMode('up');
+function setMode(m){mode=m;$('#t-in').classList.toggle('on',m==='in');$('#t-up').classList.toggle('on',m==='up');$('#f-name').style.display=m==='up'?'block':'none';$('#abtn').textContent=m==='up'?'Ro‘yxatdan o‘tish':'Kirish';$('#pass').autocomplete=m==='up'?'new-password':'current-password';aerr('')}
+function aerr(t,ok){const e=$('#aerr');e.textContent=t;e.classList.toggle('ok',!!ok)}
+$('#abtn').onclick=async()=>{const e=$('#email').value.trim(),p=$('#pass').value,n=$('#name').value.trim(),b=$('#abtn');
+ if(!/^\S+@\S+\.\S+$/.test(e))return aerr('Email noto‘g‘ri kiritilgan.');
+ if(p.length<8)return aerr('Parol kamida 8 belgidan iborat bo‘lsin.');
+ if(mode==='up'&&n.length<2)return aerr('Ismingizni kiriting.');
+ b.disabled=true;aerr('Biroz kuting...',true);
+ if(mode==='up'){const r=await sb('/auth/v1/signup',{email:e,password:p,data:{name:n}});b.disabled=false;
+  if(!r.ok)return aerr(r.status===0?'Internet yoki server bilan aloqa yo‘q.':msg(r.j.msg||r.j.error_description||r.j.message));
+  if(r.j.access_token){sess=mk(r.j,e,n);store.set('dima_sess',sess);aerr('');return enter()}
+  aerr('Emailingizga tasdiqlash havolasi yuborildi. Uni bosing, so‘ng «Kirish» ni tanlang.',true)}
+ else{const r=await sb('/auth/v1/token?grant_type=password',{email:e,password:p});b.disabled=false;
+  if(!r.ok||!r.j.access_token)return aerr(r.status===0?'Internet yoki server bilan aloqa yo‘q.':msg(r.j.msg||r.j.error_description||r.j.message));
+  sess=mk(r.j,e);store.set('dima_sess',sess);aerr('');enter()}};
+$('#forgot').onclick=async ev=>{ev.preventDefault();const e=$('#email').value.trim();
+ if(!/^\S+@\S+\.\S+$/.test(e))return aerr('Avval email manzilingizni kiriting.');
+ const r=await sb('/auth/v1/recover',{email:e});
+ aerr(r.ok?'Parolni tiklash havolasi emailingizga yuborildi.':msg(r.j.msg||r.j.error_description||r.j.message),r.ok)};
+$('#out').onclick=logout;
+$$('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+$$('[data-p]').forEach(b=>b.onclick=()=>{$('#q').value=b.dataset.p;$('#q').focus()});
+$('#theme').onclick=()=>{const r=document.documentElement;r.dataset.theme=r.dataset.theme==='light'?'dark':'light'};
+document.addEventListener('pointermove',e=>{const r=$('#stage').getBoundingClientRect();$('#tilt').style.setProperty('--ry',((e.clientX-r.left)/r.width-.5)*50+'deg');$('#tilt').style.setProperty('--rx',-((e.clientY-r.top)/r.height-.5)*50+'deg')});
+function bubble(t,c){const d=document.createElement('div');d.className='msg '+c;d.textContent=t;$('#chat').append(d);d.scrollIntoView({block:'end'});return d}
+async function ask(text){
+ $('#hero').style.display='none';$('#tiles').style.display='none';
+ const w=document.createElement('div');w.className='msg ai';w.innerHTML='<span class="dots"><span>●</span><span>●</span><span>●</span></span>';$('#chat').append(w);
+ try{const t=await tok();if(!t)throw new Error('Sessiya tugadi. Qayta kiring.');
+  const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+t,'x-premium-code':code()||''},body:JSON.stringify({ai:cur,message:text})});
+  if(r.status===401){logout();throw new Error('Sessiya tugadi. Qayta kiring.')}
+  if(r.status===403){store.del('dima_code');cur='ai1';upd();throw new Error('Premium kod noto‘g‘ri yoki eskirgan. Dima Start ga qaytdik.')}
+  if(r.status===429)throw new Error('Bepul limit tugadi. Keyinroq urinib ko‘ring.');
+  if(!r.ok)throw new Error('Server javob bermadi.');
+  const j=await r.json();w.textContent=j.reply;
+  const c=document.createElement('button');c.className='mini';c.textContent='Nusxalash';c.onclick=()=>navigator.clipboard&&navigator.clipboard.writeText(j.reply);
+  const g=document.createElement('button');g.className='mini';g.textContent='Qayta yaratish';g.onclick=()=>{w.remove();ask(text)};
+  w.append(document.createElement('br'),c,g)
+ }catch(e){w.classList.add('bad');w.textContent='AI bilan aloqa yo‘q: '+(e.name==='TypeError'?'server ulanmagan.':e.message);
+  const b=document.createElement('button');b.className='mini';b.textContent='Qayta urinish';b.onclick=()=>{w.remove();ask(text)};w.append(document.createElement('br'),b)}
+ w.scrollIntoView({block:'end'})}
+function sendQ(){const t=$('#q').value.trim();if(!t)return;$('#q').value='';bubble(t,'me');ask(t)}
+$('#send').onclick=sendQ;$('#q').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendQ()}};
+function chips(id,list,def){const c=$(id);list.forEach((t,i)=>{const b=document.createElement('button');b.className='chip'+(i===def?' on':'');b.textContent=t;b.onclick=()=>{$$(id+' .chip').forEach(x=>x.classList.remove('on'));b.classList.add('on')};c.append(b)})}
+chips('#styles',['Realistik','Anime','3D render','Multfilm','Fantastika','Logo','Avatar','Poster','Fon','Digital art'],0);chips('#ratios',['1:1','16:9','9:16','4:5'],1);chips('#cnt',['1','2'],0);
+$('#gen').onclick=async()=>{const p=$('#ip').value.trim(),pv=$('#prev');
+ if(p.length<3){pv.textContent='Avval rasm tavsifini yozing.';return}
+ pv.innerHTML='<span class="dots"><span>●</span><span>●</span><span>●</span></span>&nbsp; Yaratilmoqda...';
+ const sel=s=>($(s+' .on')||{}).textContent;
+ try{const r=await fetch('/api/image',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:p,style:sel('#styles'),ratio:sel('#ratios'),count:+sel('#cnt')})});
+  if(r.status===429)throw new Error('Kunlik bepul limit tugadi.');
+  if(!r.ok)throw new Error('Rasm serveri javob bermadi.');
+  const j=await r.json();pv.innerHTML='';j.images.forEach(u=>{const i=new Image();i.src=u;i.style.cssText='max-width:100%;border-radius:14px;margin:4px';pv.append(i)})
+ }catch(e){pv.innerHTML='Rasm yaratilmadi: '+(e.name==='TypeError'?'rasm serveri ulanmagan.':e.message)+'<br><button class="mini" id="rt">Qayta urinish</button>';$('#rt').onclick=()=>$('#gen').click()}};
+if(sess&&sess.access_token)enter();
+</script></body></html>
