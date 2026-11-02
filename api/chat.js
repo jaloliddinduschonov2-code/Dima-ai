@@ -5,8 +5,23 @@ const ROLES = {
 };
 const IDS = { ai1: "AI1", ai2: "AI2", ai3: "AI3" };
 const PREMIUM = ["AI2", "AI3"];
+async function verify(req) {
+  const h = String(req.headers.authorization || "");
+  const t = h.startsWith("Bearer ") ? h.slice(7) : "";
+  if (!t) return null;
+  const url = process.env.SUPABASE_URL, key = process.env.SUPABASE_ANON_KEY;
+  if (!url || !key) return "config";
+  try {
+    const r = await fetch(url + "/auth/v1/user", { headers: { apikey: key, Authorization: "Bearer " + t } });
+    if (!r.ok) return null;
+    return await r.json();
+  } catch (e) { return null; }
+}
 module.exports = async (req, res) => {
   if (req.method !== "POST") return res.status(405).json({ error: "method" });
+  const u = await verify(req);
+  if (u === "config") return res.status(503).json({ error: "not configured" });
+  if (!u) return res.status(401).json({ error: "login required" });
   const { ai, message } = req.body || {};
   const n = IDS[ai];
   if (!n || typeof message !== "string" || !message.trim() || message.length > 4000)
