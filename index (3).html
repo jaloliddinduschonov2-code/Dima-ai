@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="uz"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dima’AI.uz</title>
+<style>
+:root{--bg:#070614;--card:#12102a;--card2:#1b1840;--tx:#f3f1ff;--mu:#9a95c8;--ac:#8b5cf6;--ac2:#b69cff;--bd:#2b2656;--er:#f87171;--ok:#34d399;--gold:#fbbf24;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="light"]{--bg:#f4f1ff;--card:#fff;--card2:#ece8ff;--tx:#1e1b3a;--mu:#6b6790;--bd:#ddd6fe}
+@media(prefers-color-scheme:light){:root:not([data-theme]){--bg:#f4f1ff;--card:#fff;--card2:#ece8ff;--tx:#1e1b3a;--mu:#6b6790;--bd:#ddd6fe}}
+*{box-sizing:border-box;margin:0}html,body{height:100%}
+body{background:radial-gradient(700px 420px at 15% -5%,#5b2bd455,transparent),radial-gradient(600px 400px at 100% 10%,#06b6d426,transparent),var(--bg);color:var(--tx);font:16px system-ui,sans-serif}
+button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer;border:0;background:none}
+.logo{font-weight:800;font-size:22px}.logo b{color:var(--ac2)}
+.view{display:none;min-height:100%}.view.on{display:block}
+.wrap{max-width:560px;margin:0 auto;padding:18px 16px 96px}
+.btn{width:100%;padding:14px;border-radius:999px;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;font-weight:600;box-shadow:0 0 24px #8b5cf666}.btn:disabled{opacity:.6}
+.in{width:100%;padding:14px;border-radius:14px;background:var(--card);border:1px solid var(--bd);margin:6px 0 14px;outline:0}.in:focus{border-color:var(--ac)}
+label{font-size:14px;color:var(--mu)}
+.glass{background:color-mix(in srgb,var(--card) 80%,transparent);border:1px solid var(--bd);border-radius:24px;padding:20px;backdrop-filter:blur(10px)}
+.tabs{display:flex;gap:8px;margin:16px 0}.tabs button{flex:1;padding:10px;border-radius:999px;background:var(--card);border:1px solid var(--bd);color:var(--mu)}.tabs .on{background:var(--card2);color:var(--tx);border-color:var(--ac)}
+.err{color:var(--er);font-size:14px;min-height:20px;margin-bottom:8px}.err.ok{color:var(--ok)}
+.note{font-size:12px;color:var(--mu);text-align:center;margin-top:12px;line-height:1.5}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.pill{padding:10px 14px;border-radius:999px;background:var(--card);border:1px solid var(--bd);display:flex;gap:8px;align-items:center}
+.ic{width:42px;height:42px;border-radius:50%;background:var(--card);border:1px solid var(--bd)}
+.stage{perspective:800px;height:170px;display:grid;place-items:center}
+.tilt{transform-style:preserve-3d;transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .15s}
+.cube{width:90px;height:90px;position:relative;transform-style:preserve-3d;animation:spin 16s linear infinite}
+@keyframes spin{to{transform:rotateX(360deg) rotateY(360deg)}}
+.cube i{position:absolute;inset:0;display:grid;place-items:center;font-style:normal;font-size:34px;color:#fff;border:1px solid #b69cff99;background:linear-gradient(135deg,#7c3aed66,#22d3ee26);transform:var(--t) translateZ(45px);box-shadow:inset 0 0 22px #8b5cf666,0 0 30px #8b5cf655}
+h1{font-size:26px;text-align:center;line-height:1.25}.sub{color:var(--mu);text-align:center;margin:6px 0 16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;perspective:700px}
+.tile{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:14px;text-align:left;transition:transform .2s,border-color .2s}
+.tile:active{transform:translateY(-3px) rotateX(8deg);border-color:var(--ac)}.tile small{color:var(--mu);display:block;margin-top:4px}
+.chat{display:flex;flex-direction:column;gap:10px;margin:12px 0}
+.msg{padding:12px 14px;border-radius:16px;max-width:88%;white-space:pre-wrap;line-height:1.45}
+.me{align-self:flex-end;background:linear-gradient(135deg,#7c3aed,#8b5cf6);color:#fff}
+.ai{align-self:flex-start;background:var(--card);border:1px solid var(--bd)}.ai.bad{border-color:var(--er)}
+.mini{margin-top:8px;padding:6px 12px;border-radius:999px;background:var(--card2);font-size:13px;margin-right:6px}
+.dots span{animation:b 1s infinite;display:inline-block}.dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}@keyframes b{50%{opacity:.2}}
+.bar{position:sticky;bottom:80px;display:flex;gap:8px;align-items:flex-end;background:var(--card);border:1px solid var(--ac);border-radius:24px;padding:8px;box-shadow:0 0 26px #8b5cf644}
+.bar textarea{flex:1;background:none;border:0;outline:0;resize:none;padding:8px;max-height:120px}
+.send{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#a78bfa);color:#fff;font-size:18px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 16px}.chip{padding:8px 14px;border-radius:999px;background:var(--card);border:1px solid var(--bd);font-size:14px}.chip.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.prev{background:var(--card);border:1px dashed var(--bd);border-radius:18px;min-height:200px;display:flex;align-items:center;justify-content:center;text-align:center;padding:16px;margin-top:16px;color:var(--mu)}
+.nav{position:fixed;left:0;right:0;bottom:0;padding-bottom:env(safe-area-inset-bottom,0px);background:var(--card);border-top:1px solid var(--bd);display:flex;z-index:5}
+.nav button{padding:12px 8px;font-size:12px;color:var(--mu);flex:1}.nav .on{color:var(--ac2)}.nav span{display:block;font-size:20px}
+.row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bd)}
+.sheet{position:fixed;inset:0;background:#000b;display:none;align-items:flex-end;z-index:20}.sheet.on{display:flex}
+.sheet>div{background:var(--card);width:100%;max-width:560px;margin:0 auto;border-radius:24px 24px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom,0px))}
+.mcard{display:flex;gap:12px;align-items:center;padding:14px;border-radius:16px;border:1px solid var(--bd);background:var(--card2);margin-top:10px;width:100%;text-align:left}
+.mcard.on{border-color:var(--ac);box-shadow:0 0 18px #8b5cf655}
+.badge{font-size:11px;padding:3px 8px;border-radius:999px;background:#fbbf2426;color:var(--gold)}.badge.f{background:#34d39926;color:var(--ok)}
+.plans{display:grid;gap:12px;margin:14px 0}.plan{border:1px solid var(--bd);background:var(--card2);border-radius:18px;padding:14px;position:relative}.plan.best{border-color:var(--ac);box-shadow:0 0 18px #8b5cf655}.plan s{color:var(--mu);font-size:14px}.plan .pr{font-size:22px;font-weight:800}.plan small{font-weight:400;color:var(--mu);font-size:13px}.tag{position:absolute;top:-10px;right:12px;font-size:11px;padding:3px 10px;border-radius:999px;background:var(--gold);color:#1e1b3a;font-weight:700}.lnk{display:block;text-align:center;padding:12px;border-radius:999px;border:1px solid var(--bd);background:var(--card2);margin-top:12px;color:var(--tx);text-decoration:none;font-size:14px}
+.fc{display:none;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;padding:8px 14px;border-radius:999px;background:var(--card2);border:1px solid var(--bd);font-size:13px}
+</style></head><body>
+
+<section class="view on" id="v-auth"><div class="wrap">
+<div class="logo" style="margin-top:14px">Dima’AI <b>✦</b></div>
+<div class="glass" style="margin-top:18px">
+<h1 style="text-align:left;font-size:26px">Sun’iy intellekt imkoniyatlari bir joyda</h1>
+<div class="tabs"><button id="t-in" class="on">Kirish</button><button id="t-up">Ro‘yxatdan o‘tish</button></div>
+<div id="f-name" style="display:none"><label>Ism</label><input class="in" id="name" placeholder="Ismingiz"></div>
+<label>Email</label><input class="in" id="email" type="email" placeholder="email@misol.uz" autocomplete="email">
+<label>Parol</label><input class="in" id="pass" type="password" placeholder="Kamida 8 belgi" autocomplete="current-password">
+<div class="err" id="aerr"></div><button class="btn" id="abtn">Kirish</button>
+<button class="btn" id="gbtn" style="display:none;margin-top:10px;background:var(--card2);box-shadow:none">G&nbsp; Google bilan davom etish</button>
+<p class="note"><a href="#" id="forgot" style="color:var(--ac2)">Parolni unutdingizmi?</a></p>
+<p class="note">Davom etib, Maxfiylik siyosati va Foydalanish shartlariga rozilik bildirasiz.</p><a class="lnk" data-ch target="_blank" rel="noopener">📢 Yangiliklar: Telegram kanal</a></div>
+</div></section>
+
+<section class="view" id="v-home"><div class="wrap">
+<div class="top"><button class="pill" id="mbtn"><span id="mname">Dima Start</span> ▾</button><button class="ic" id="theme">◐</button></div>
+<div id="hero">
+<div class="stage" id="stage"><div class="tilt" id="tilt"><div class="cube">
+<i style="--t:rotateY(0deg)">✦</i><i style="--t:rotateY(90deg)">✦</i><i style="--t:rotateY(180deg)">✦</i><i style="--t:rotateY(-90deg)">✦</i><i style="--t:rotateX(90deg)">✦</i><i style="--t:rotateX(-90deg)">✦</i></div></div></div>
+<h1 id="hi">Salom! Bugun nima yaratamiz?</h1><p class="sub">Savol bering, matn yozing, rasm yarating</p></div>
+<div class="chat" id="chat"></div>
+<div class="fc" id="fc"><span id="fname"></span><button id="fx">✕</button></div>
+<div class="bar"><button class="send" id="att" style="background:var(--card2);border:1px solid var(--bd)">📎</button><input type="file" id="file" hidden accept=".txt,.md,.csv,.json,.js,.py,.html,.css,.xml,.log,.sql,.java,.c,.cpp,.ts,text/*,image/*"><textarea id="q" rows="1" placeholder="Istalgan savol..."></textarea><button class="send" id="send">↑</button></div>
+<div class="note" id="lim"></div>
+<div class="grid" id="tiles">
+<button class="tile" data-go="img">🎨 Rasm yaratish<small>Matndan rasm</small></button>
+<button class="tile" data-p="Menga kod yozib ber: ">💻 Kod yozish<small>Dasturlash yordami</small></button>
+<button class="tile" data-p="Quyidagi mavzuda matn yoz: ">✍️ Matn yozish<small>Maqola, post, xat</small></button>
+<button class="tile" data-p="Tarjima qil: ">🌐 Tarjima<small>UZ · RU · EN</small></button>
+<button class="tile" data-p="IELTS Writing Task 2 uchun fikrimni tekshir: ">📘 IELTS<small>Ingliz tili</small></button>
+<button class="tile" data-p="Quyidagi matnni qisqartirib, xulosa chiqar: ">📝 Xulosa<small>Matnni qisqartirish</small></button></div><a class="lnk" id="chh" data-ch target="_blank" rel="noopener">📢 Yangiliklar: Telegram kanalimiz</a>
+</div></section>
+
+<section class="view" id="v-img"><div class="wrap">
+<div class="top"><div class="logo">Rasm yaratish</div><span class="chip">FLUX</span></div>
+<label>Rasmni tasvirlang (inglizcha yaxshiroq ishlaydi)</label>
+<textarea class="in" id="ip" rows="4" placeholder="a serene Japanese garden at dawn with cherry blossoms..."></textarea>
+<label>Uslub</label><div class="chips" id="styles"></div>
+<label>Format (taxminiy: rasm kvadrat chiqishi mumkin)</label><div class="chips" id="ratios"></div>
+<label>Soni</label><div class="chips" id="cnt"></div>
+<button class="btn" id="gen">Yaratish</button><div class="prev" id="prev">Rasm shu yerda ko‘rinadi</div>
+</div></section>
+
+<section class="view" id="v-prof"><div class="wrap">
+<div class="top"><div class="logo">Profil</div></div>
+<div class="glass" style="margin-bottom:14px"><b id="pn">—</b><div id="pe" style="color:var(--mu);font-size:14px"></div></div>
+<div class="row"><span>Tarif</span><span id="plan">Bepul</span></div>
+<div class="row"><span>Bugungi xabarlar</span><span id="uc">—</span></div>
+<div class="row"><span>Bugungi rasmlar</span><span id="ui">—</span></div>
+<div class="row"><span>Til</span><span>O‘zbek</span></div>
+<button class="btn" id="pcode" style="margin-top:20px">★ Premium tariflar va sotib olish</button>
+<a class="lnk" data-ch target="_blank" rel="noopener">📢 Telegram kanal</a><a class="lnk" id="adm" target="_blank" rel="noopener">💬 Admin bilan bog‘lanish</a>
+<button class="btn" id="out" style="margin-top:12px;background:var(--card2);box-shadow:none">Chiqish</button>
+</div></section>
+
+<nav class="nav" id="nav" style="display:none">
+<button data-go="home" class="on"><span>💬</span>Chat</button><button data-go="img"><span>🎨</span>Rasm</button><button data-go="prof"><span>👤</span>Profil</button></nav>
+
+<div class="sheet" id="s-model"><div><b style="font-size:18px">AI ni tanlang</b><div id="mlist"></div><button class="btn" id="mclose" style="margin-top:14px;background:var(--card2);box-shadow:none">Yopish</button></div></div>
+<div class="sheet" id="s-prem"><div style="max-height:90vh;overflow:auto"><b style="font-size:18px">★ Premium tariflar</b>
+<p class="note" style="text-align:left">Dima Pro va Dima Turbo faqat Premium a’zolar uchun.</p>
+<div class="plans">
+<div class="plan"><b>Oylik</b><div class="pr">50 000 so‘m <small>/ oy</small></div><button class="btn" data-buy="Oylik" style="margin-top:10px">Sotib olish</button></div>
+<div class="plan best"><span class="tag">Aksiya −50%</span><b>Yillik</b><div><s>600 000 so‘m</s></div><div class="pr">300 000 so‘m <small>/ yil</small></div><div class="note" style="text-align:left;margin:4px 0 0">Oyiga atigi 25 000 so‘m</div><button class="btn" data-buy="Yillik" style="margin-top:10px">Sotib olish</button></div></div>
+<p class="note" style="text-align:left"><b>To‘lov tartibi:</b><br>1. «Sotib olish» ni bosib, Telegram da adminga yozing.<br>2. Admin karta raqamini beradi. To‘lovni qilib, chekni yuboring.<br>3. Admin emailingizga Premium ulaydi. Saytni yangilang yoki qayta kiring.</p>
+<label>Premium kodingiz bormi?</label>
+<input class="in" id="pin" placeholder="Premium kod" autocomplete="off"><div class="err" id="perr"></div>
+<button class="btn" id="psave">Kodni saqlash</button>
+<a class="lnk" data-ch target="_blank" rel="noopener">📢 Yangiliklar kanali</a>
+<button class="btn" id="pclose" style="margin-top:12px;background:var(--card2);box-shadow:none">Yopish</button></div></div>
+
+<script>
+const SB='https://qjgnwremgeyajzpwybvb.supabase.co';
+const KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqZ253cmVtZ2V5YWp6cHd5YnZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzNDU5NTgsImV4cCI6MjEwODkyMTk1OH0.ztJTRZOF8FFt159K-0eVkre7vbKjXeDf5yukLjVJ-iE';
+const TG='https://t.me/Dima_ai_admin',CH='https://t.me/dima_ai_offical';let prem=null;
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const M=[{id:'ai1',n:'Dima Start',d:'Universal yordamchi: savol, matn, tarjima',m:'gpt-oss-120b',p:0},{id:'ai2',n:'Dima Pro',d:'Mantiq, matematika va dasturlash',m:'gpt-oss-120b',p:1},{id:'ai3',n:'Dima Turbo',d:'Tezkor javoblar va g‘oyalar',m:'gpt-oss-20b',p:1}];
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+let mode='in',sess=store.get('dima_sess'),cur='ai1';
+const code=()=>store.get('dima_code');
+const isP=()=>!!(code()||prem);
+async function loadPrem(){prem=null;const t=await tok();if(!t)return;
+ try{const d=new Date().toISOString().slice(0,10);
+  const r=await fetch(SB+'/rest/v1/premium_users?select=until&until=gte.'+d+'&order=until.desc&limit=1',{headers:{apikey:KEY,Authorization:'Bearer '+t}});
+  if(r.ok){const a=await r.json();if(a.length)prem=a[0].until}}catch(e){}
+ upd()}
+const sh=(id,on)=>$(id).classList.toggle('on',on);
+async function sb(path,body,token){
+ try{const r=await fetch(SB+path,{method:'POST',headers:Object.assign({'Content-Type':'application/json',apikey:KEY},token?{Authorization:'Bearer '+token}:{}),body:JSON.stringify(body||{})});
+  let j={};try{j=await r.json()}catch(e){}return{ok:r.ok,status:r.status,j}}catch(e){return{ok:false,status:0,j:{}}}}
+function mk(j,email,name){const exp=j.expires_at||(Math.floor(Date.now()/1000)+(j.expires_in||3600));
+ const u=j.user||{};const nm=(u.user_metadata&&u.user_metadata.name)||name||(email||u.email||'').split('@')[0];
+ return{access_token:j.access_token,refresh_token:j.refresh_token,expires_at:exp,name:nm,email:u.email||email}}
+async function tok(){if(!sess)return null;
+ if(Date.now()/1000>sess.expires_at-60){const r=await sb('/auth/v1/token?grant_type=refresh_token',{refresh_token:sess.refresh_token});
+  if(!r.ok||!r.j.access_token){logout();return null}
+  sess=mk(r.j,sess.email,sess.name);store.set('dima_sess',sess)}
+ return sess.access_token}
+function logout(){prem=null;const t=sess&&sess.access_token;sess=null;store.del('dima_sess');if(t)sb('/auth/v1/logout',{},t);go('auth')}
+function msg(t){const m=String(t||'');
+ if(/already registered|already been registered/i.test(m))return'Bu email allaqachon ro‘yxatdan o‘tgan. «Kirish» ni tanlang.';
+ if(/invalid login/i.test(m))return'Email yoki parol noto‘g‘ri.';
+ if(/not confirmed/i.test(m))return'Emailingizni tasdiqlang: pochtangizga yuborilgan havolani bosing.';
+ if(/rate limit|too many|security purposes/i.test(m))return'Juda ko‘p urinish. Bir necha daqiqadan keyin qayta urinib ko‘ring.';
+ if(/password/i.test(m))return'Parol juda oddiy yoki qisqa. Kamida 8 belgi kiriting.';
+ return m||'Xatolik yuz berdi. Qayta urinib ko‘ring.'}
+const LIM={f:{chat:20,image:3},p:{chat:200,image:30}};
+function today(){return new Date(Date.now()+5*3600e3).toISOString().slice(0,10)}
+async function loadUsage(){const t=await tok();if(!t)return;
+ try{const r=await fetch(SB+'/rest/v1/usage?select=kind&day=eq.'+today()+'&limit=500',{headers:{apikey:KEY,Authorization:'Bearer '+t}});
+  if(!r.ok)return;const a=await r.json();const c=a.filter(x=>x.kind==='chat').length,m=a.filter(x=>x.kind==='image').length,L=isP()?LIM.p:LIM.f;
+  $('#uc').textContent=c+' / '+L.chat;$('#ui').textContent=m+' / '+L.image;
+  $('#lim').textContent='Bugun: '+c+'/'+L.chat+' xabar · '+m+'/'+L.image+' rasm'}catch(e){}}
+function go(v){$$('.view').forEach(x=>x.classList.toggle('on',x.id==='v-'+v));$$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.go===v));$('#nav').style.display=v==='auth'?'none':'flex';scrollTo(0,0)}
+function enter(){$('#hi').textContent='Salom, '+sess.name+'! Bugun nima yaratamiz?';$('#pn').textContent=sess.name;$('#pe').textContent=sess.email;upd();go('home');loadPrem().then(loadUsage)}
+function upd(){$('#mname').textContent=M.find(m=>m.id===cur).n;$('#plan').textContent=isP()?('★ Premium'+(prem?' · '+prem+' gacha':'')):'Bepul'}
+function models(){const l=$('#mlist');l.innerHTML='';M.forEach(m=>{const b=document.createElement('button');b.className='mcard'+(m.id===cur?' on':'');
+ b.innerHTML='<div style="flex:1"><b>'+m.n+'</b> <span class="badge'+(m.p?'':' f')+'">'+(m.p?'★ Premium':'Bepul')+'</span><div style="color:var(--mu);font-size:13px;margin-top:4px">'+m.d+'</div><div style="color:var(--mu);font-size:11px;margin-top:2px">Model: '+m.m+'</div></div><span>'+(m.p&&!isP()?'🔒':m.id===cur?'✓':'')+'</span>';
+ b.onclick=()=>{if(m.p&&!isP()){sh('#s-model',false);sh('#s-prem',true);return}cur=m.id;sh('#s-model',false);upd()};l.append(b)})}
+$('#mbtn').onclick=()=>{models();sh('#s-model',true)};$('#mclose').onclick=()=>sh('#s-model',false);
+$('#pcode').onclick=()=>{$('#perr').textContent='';sh('#s-prem',true)};$('#pclose').onclick=()=>sh('#s-prem',false);
+$('#psave').onclick=()=>{const v=$('#pin').value.trim();if(v.length<4){$('#perr').textContent='Kodni to‘liq kiriting.';return}store.set('dima_code',v);$('#pin').value='';sh('#s-prem',false);upd()};
+$('#t-in').onclick=()=>setMode('in');$('#t-up').onclick=()=>setMode('up');
+function setMode(m){mode=m;$('#t-in').classList.toggle('on',m==='in');$('#t-up').classList.toggle('on',m==='up');$('#f-name').style.display=m==='up'?'block':'none';$('#abtn').textContent=m==='up'?'Ro‘yxatdan o‘tish':'Kirish';$('#pass').autocomplete=m==='up'?'new-password':'current-password';aerr('')}
+function aerr(t,ok){const e=$('#aerr');e.textContent=t;e.classList.toggle('ok',!!ok)}
+$('#abtn').onclick=async()=>{const e=$('#email').value.trim(),p=$('#pass').value,n=$('#name').value.trim(),b=$('#abtn');
+ if(!/^\S+@\S+\.\S+$/.test(e))return aerr('Email noto‘g‘ri kiritilgan.');
+ if(p.length<8)return aerr('Parol kamida 8 belgidan iborat bo‘lsin.');
+ if(mode==='up'&&n.length<2)return aerr('Ismingizni kiriting.');
+ b.disabled=true;aerr('Biroz kuting...',true);
+ if(mode==='up'){const r=await sb('/auth/v1/signup',{email:e,password:p,data:{name:n}});b.disabled=false;
+  if(!r.ok)return aerr(r.status===0?'Internet yoki server bilan aloqa yo‘q.':msg(r.j.msg||r.j.error_description||r.j.message));
+  if(r.j.access_token){sess=mk(r.j,e,n);store.set('dima_sess',sess);aerr('');return enter()}
+  aerr('Emailingizga tasdiqlash havolasi yuborildi. Uni bosing, so‘ng «Kirish» ni tanlang.',true)}
+ else{const r=await sb('/auth/v1/token?grant_type=password',{email:e,password:p});b.disabled=false;
+  if(!r.ok||!r.j.access_token)return aerr(r.status===0?'Internet yoki server bilan aloqa yo‘q.':msg(r.j.msg||r.j.error_description||r.j.message));
+  sess=mk(r.j,e);store.set('dima_sess',sess);aerr('');enter()}};
+$('#forgot').onclick=async ev=>{ev.preventDefault();const e=$('#email').value.trim();
+ if(!/^\S+@\S+\.\S+$/.test(e))return aerr('Avval email manzilingizni kiriting.');
+ const r=await sb('/auth/v1/recover',{email:e});
+ aerr(r.ok?'Parolni tiklash havolasi emailingizga yuborildi.':msg(r.j.msg||r.j.error_description||r.j.message),r.ok)};
+$('#out').onclick=logout;
+$$('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+$$('[data-p]').forEach(b=>b.onclick=()=>{$('#q').value=b.dataset.p;$('#q').focus()});
+$('#theme').onclick=()=>{const r=document.documentElement;r.dataset.theme=r.dataset.theme==='light'?'dark':'light'};
+document.addEventListener('pointermove',e=>{const r=$('#stage').getBoundingClientRect();$('#tilt').style.setProperty('--ry',((e.clientX-r.left)/r.width-.5)*50+'deg');$('#tilt').style.setProperty('--rx',-((e.clientY-r.top)/r.height-.5)*50+'deg')});
+function bubble(t,c){const d=document.createElement('div');d.className='msg '+c;d.textContent=t;$('#chat').append(d);d.scrollIntoView({block:'end'});return d}
+async function ask(text){
+ $('#hero').style.display='none';$('#tiles').style.display='none';$('#chh').style.display='none';
+ const w=document.createElement('div');w.className='msg ai';w.innerHTML='<span class="dots"><span>●</span><span>●</span><span>●</span></span>';$('#chat').append(w);
+ try{const t=await tok();if(!t)throw new Error('Sessiya tugadi. Qayta kiring.');
+  const r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+t,'x-premium-code':code()||''},body:JSON.stringify({ai:cur,message:text})});
+  if(r.status===401){logout();throw new Error('Sessiya tugadi. Qayta kiring.')}
+  if(r.status===403){store.del('dima_code');cur='ai1';upd();throw new Error('Premium faol emas yoki muddati tugagan. Dima Start ga qaytdik.')}
+  if(r.status===429)throw new Error('Kunlik limit tugadi. Ertaga yangilanadi yoki Premium oling.');if(r.status===503)throw new Error('Xizmat hozir band yoki sozlanmagan. Birozdan keyin urinib ko‘ring.');
+  if(!r.ok)throw new Error('Server javob bermadi.');
+  const j=await r.json();w.textContent=j.reply;loadUsage();
+  const c=document.createElement('button');c.className='mini';c.textContent='Nusxalash';c.onclick=()=>navigator.clipboard&&navigator.clipboard.writeText(j.reply);
+  const g=document.createElement('button');g.className='mini';g.textContent='Qayta yaratish';g.onclick=()=>{w.remove();ask(text)};
+  w.append(document.createElement('br'),c,g)
+ }catch(e){w.classList.add('bad');w.textContent='AI bilan aloqa yo‘q: '+(e.name==='TypeError'?'server ulanmagan.':e.message);
+  const b=document.createElement('button');b.className='mini';b.textContent='Qayta urinish';b.onclick=()=>{w.remove();ask(text)};w.append(document.createElement('br'),b)}
+ w.scrollIntoView({block:'end'})}
+let att=null;
+function clr(){att=null;$('#fc').style.display='none'}
+$('#att').onclick=()=>$('#file').click();
+$('#fx').onclick=clr;
+$('#file').onchange=async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;
+ if(f.type.startsWith('image/')){$('#hero').style.display='none';$('#tiles').style.display='none';$('#chh').style.display='none';bubble('Rasm tahlili hozircha mavjud emas: joriy AI modellar rasmni ko‘ra olmaydi. Rasmdagi matnni yozib yuborsangiz, yordam beraman.','ai');return}
+ if(f.size>300000){bubble('Fayl juda katta (300 KB dan oshmasin).','ai');return}
+ try{let t=await f.text();if(/\u0000/.test(t.slice(0,2000)))throw 0;if(t.length>15000)t=t.slice(0,15000)+'\n[...fayl qisqartirildi...]';att={name:f.name,text:t};$('#fname').textContent='📎 '+f.name;$('#fc').style.display='flex'}
+ catch(x){bubble('Bu fayl turini o‘qib bo‘lmadi. Hozircha matnli fayllar (txt, md, csv, json, kod) qo‘llab-quvvatlanadi.','ai')}};
+function sendQ(){let t=$('#q').value.trim();if(!t&&!att)return;if(!t)t='Quyidagi faylni tahlil qil va qisqacha tushuntir.';$('#q').value='';
+ const full=att?t+'\n\n--- Fayl: '+att.name+' ---\n'+att.text:t;bubble(t+(att?'\n📎 '+att.name:''),'me');clr();ask(full)}
+$('#send').onclick=sendQ;$('#q').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendQ()}};
+function chips(id,list,def){const c=$(id);list.forEach((t,i)=>{const b=document.createElement('button');b.className='chip'+(i===def?' on':'');b.textContent=t;b.onclick=()=>{$$(id+' .chip').forEach(x=>x.classList.remove('on'));b.classList.add('on')};c.append(b)})}
+chips('#styles',['Realistik','Anime','3D render','Multfilm','Fantastika','Logo','Avatar','Poster','Fon','Digital art'],0);chips('#ratios',['1:1','16:9','9:16','4:5'],1);chips('#cnt',['1','2'],0);
+$('#gen').onclick=async()=>{const p=$('#ip').value.trim(),pv=$('#prev');
+ if(p.length<3){pv.textContent='Avval rasm tavsifini yozing.';return}
+ pv.innerHTML='<span class="dots"><span>●</span><span>●</span><span>●</span></span>&nbsp; Yaratilmoqda...';
+ const sel=s=>($(s+' .on')||{}).textContent;
+ try{const t=await tok();if(!t)throw new Error('Sessiya tugadi. Qayta kiring.');
+  const r=await fetch('/api/image',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+t},body:JSON.stringify({prompt:p,style:sel('#styles'),ratio:sel('#ratios'),count:+sel('#cnt')})});
+  if(r.status===401){logout();throw new Error('Sessiya tugadi. Qayta kiring.')}
+  if(r.status===429)throw new Error('Kunlik rasm limiti tugadi. Ertaga yangilanadi yoki Premium oling.');
+  if(!r.ok)throw new Error('Rasm serveri javob bermadi yoki band.');
+  const j=await r.json();pv.innerHTML='';loadUsage();
+  j.images.forEach((u,k)=>{const d=document.createElement('div');d.style.cssText='margin:6px 0;width:100%';const i=new Image();i.src=u;i.style.cssText='max-width:100%;border-radius:14px';const a=document.createElement('a');a.href=u;a.download='dima-ai-'+Date.now()+'-'+(k+1)+'.jpg';a.textContent='⬇ Yuklab olish';a.className='lnk';d.append(i,a);pv.append(d)})
+ }catch(e){pv.innerHTML='Rasm yaratilmadi: '+(e.name==='TypeError'?'rasm serveri ulanmagan.':e.message)+'<br><button class="mini" id="rt">Qayta urinish</button>';$('#rt').onclick=()=>$('#gen').click()}};
+$$('[data-ch]').forEach(a=>a.href=CH);$('#adm').href=TG;
+$$('[data-buy]').forEach(b=>b.onclick=()=>{const em=sess?sess.email:'';window.open(TG+'?text='+encodeURIComponent('Salom! Dima’AI Premium ('+b.dataset.buy+') olmoqchiman. Email: '+em),'_blank')});
+$('#gbtn').onclick=()=>{location.href=SB+'/auth/v1/authorize?provider=google&redirect_to='+encodeURIComponent(location.origin)};
+(async()=>{
+ try{const r=await fetch(SB+'/auth/v1/settings',{headers:{apikey:KEY}});const j=await r.json();if(j.external&&j.external.google)$('#gbtn').style.display='block'}catch(e){}
+ const h=new URLSearchParams(location.hash.slice(1));
+ if(h.get('error_description')){history.replaceState(null,'',location.pathname);aerr(msg(h.get('error_description')));return}
+ const at=h.get('access_token');
+ if(at){history.replaceState(null,'',location.pathname);
+  try{const r=await fetch(SB+'/auth/v1/user',{headers:{apikey:KEY,Authorization:'Bearer '+at}});const u=await r.json();
+   if(r.ok){const md=u.user_metadata||{};sess={access_token:at,refresh_token:h.get('refresh_token'),expires_at:+h.get('expires_at')||Math.floor(Date.now()/1000)+(+h.get('expires_in')||3600),name:md.name||md.full_name||(u.email||'').split('@')[0],email:u.email};store.set('dima_sess',sess);return enter()}}catch(e){}
+  aerr('Kirishda xatolik. Qayta urinib ko‘ring.');return}
+ if(sess&&sess.access_token)enter()})();
+</script></body></html>
